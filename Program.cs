@@ -1,242 +1,40 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Data;
-//using System.Data.SqlClient;
-
-//namespace ConAppAssignment6Day6Ph2
-//{
-//    internal class Program
-//    {
-//        static SqlConnection con;
-//        static SqlCommand cmd;
-//        static SqlDataReader reader;
-//        static string constr = "server=SHIVAMSINGH;database=ProductInventoryDB;trusted_connection=true;";
-//        static void Main(string[] args)
-//        {
-//            try
-//            {
-
-//                con = new SqlConnection(constr);
-//                cmd = new SqlCommand
-//                {
-//                    Connection = con,
-//                    CommandText = "select*from Products"
-//                };
-//                con.Open();
-//                reader = cmd.ExecuteReader();
-//                Console.WriteLine("ProductId \t ProductName \t Price \t Quantity \t MfDate \t ExpDate");
-//                while (reader.Read())
-//                {
-//                    Console.Write(reader[0] + "\t");
-//                    Console.Write(reader[1] + "\t\t ");
-//                    Console.Write(reader[2] + "\t\t ");
-//                    Console.Write(reader[3] +"\t\t ");
-//                    Console.Write(reader[4] + "\t ");
-//                    Console.Write(reader[5] + "\t ");
-//                    Console.WriteLine("\n");
-//                }
-
-//            }
-//            catch(Exception ex)
-//            {
-//                Console.WriteLine("Error Occured"+ex.Message);
-//            }
-//            finally {
-//                con.Close();
-//                Console.ReadKey();
-//            }
-//        }
-//    }
-//}
-
-//Product inserted
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Data;
-//using System.Data.SqlClient;
-
-//namespace ConAppAssignment6Day6Ph2
-//{
-//    internal class Program
-//    {
-//        static SqlConnection con;
-//        static SqlCommand cmd;
-//        static SqlDataReader reader;
-//        static string constr = "server=SHIVAMSINGH;database=ProductInventoryDB;trusted_connection=true;";
-//        static void Main(string[] args)
-//        {
-//            try
-//            {
-
-//                con = new SqlConnection(constr);
-//                cmd = new SqlCommand
-//                {
-//                    Connection = con,
-//                    CommandText = "insert into Products (ProductId,ProductName,Price,Qunatity,MfDate,ExpDate) values(@id,@name,@pr,@qt,@mfg,@exp)"
-//                };
-//                con.Open();
-//                Console.WriteLine("Enter Product Id");
-//                int id = int.Parse(Console.ReadLine());
-//                Console.WriteLine("Enter Product name");
-//                string name = Console.ReadLine();
-//                Console.WriteLine("Enter Product Price");
-//                float price = float.Parse(Console.ReadLine());
-//                Console.WriteLine("Enter Quantity");
-//                int qt = int.Parse(Console.ReadLine());
-//                Console.WriteLine("Enter manufacturing date");
-//                DateTime mfg = DateTime.Parse(Console.ReadLine());
-//                Console.WriteLine("Enter Expiry date");
-//                DateTime exp = DateTime.Parse(Console.ReadLine());
-//                cmd.Parameters.AddWithValue("@id", id);
-//                cmd.Parameters.AddWithValue("@name",name);
-//                cmd.Parameters.AddWithValue("@pr", price);
-//                cmd.Parameters.AddWithValue("@qt", qt);
-//                cmd.Parameters.AddWithValue("@mfg", mfg);
-//                cmd.Parameters.AddWithValue("@exp", exp);
-
-//                cmd.ExecuteNonQuery();
-//                Console.WriteLine("Product Inserted");
-
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine("Error Occured" + ex.Message);
-//            }
-//            finally
-//            {
-//                con.Close();
-//                Console.ReadKey();
-//            }
-//        }
-//    }
-//}
-
-//update product Quantity
-
-
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Data;
-//using System.Data.SqlClient;
-
-//namespace ConAppAssignment6Day6Ph2
-//{
-//    internal class Program
-//    {
-//        static SqlConnection con;
-//        static SqlCommand cmd;
-//        static SqlDataReader reader;
-//        static string constr = "server=SHIVAMSINGH;database=ProductInventoryDB;trusted_connection=true;";
-//        static void Main(string[] args)
-//        {
-//            try
-//            {
-
-//                con = new SqlConnection(constr);
-//                cmd = new SqlCommand
-//                {
-//                    Connection = con,
-//                    CommandText = "update Products set Qunatity=@qt where ProductId=@id"
-//                };
-
-//                Console.WriteLine("Enter Product Id");
-//                int id = int.Parse(Console.ReadLine());
-
-//                Console.WriteLine("Enter Quantity");
-//                int qt = int.Parse(Console.ReadLine());
-
-//                cmd.Parameters.AddWithValue("@id", id);
-//                cmd.Parameters.AddWithValue("@qt", qt);
-
-
-//                con.Open();
-//                int no= cmd.ExecuteNonQuery();
-//                if (no > 0)
-//                {
-//                    Console.WriteLine($"Product Quantity update for {id}");
-//                }
-
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine("Error Occured" + ex.Message);
-//            }
-//            finally
-//            {
-//                con.Close();
-//                Console.ReadKey();
-//            }
-//        }
-//    }
-//}
-//Remove Product
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
+﻿using System;
 using System.Data.SqlClient;
 
-namespace ConAppAssignment6Day6Ph2
+class Program
 {
-    internal class Program
+    static void Main()
     {
-        static SqlConnection con;
-        static SqlCommand cmd;
-        static SqlDataReader reader;
-        static string constr = "server=SHIVAMSINGH;database=ProductInventoryDB;trusted_connection=true;";
-        static void Main(string[] args)
+        
+        string connectionString = "server=SHIVAMSINGH;database=Assignment08;trusted_connection=true;";
+        using (SqlConnection connection = new SqlConnection(connectionString))
         {
-            try
+            connection.Open();
+
+            string query = "SELECT TOP 5 PId, Pname, PPrice, MnfDate, ExpDate FROM Products ORDER BY Pname DESC";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
-
-                con = new SqlConnection(constr);
-                cmd = new SqlCommand
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    Connection = con,
-                    CommandText = "delete from Products where ProductId=@id"
-                };
+                    Console.WriteLine("{0,-10} {1,-15} {2,-10} {3,-15} {4,-15}", "PId", "PName", "PPrice", "MnfDate", "ExpDate");
+                    Console.WriteLine(new string('-', 65));
 
-                Console.WriteLine("Enter Product Id");
-                int id = int.Parse(Console.ReadLine());
+                    while (reader.Read())
+                    {
+                        string PId = reader["PId"].ToString();
+                        string Pname = reader["Pname"].ToString();
+                        double PPrice = (double)reader["PPrice"];
+                        DateTime MnfDate = (DateTime)reader["MnfDate"];
+                        DateTime ExpDate = (DateTime)reader["ExpDate"];
 
-              
-
-                cmd.Parameters.AddWithValue("@id", id);
-               
-
-
-                con.Open();
-                int no = cmd.ExecuteNonQuery();
-                if (no > 0)
-                {
-                    Console.WriteLine($"Product is deleted from the database");
+                        Console.WriteLine("{0,-10} {1,-15} {2,-10:C2} {3,-15:yyyy-MM-dd} {4,-15:yyyy-MM-dd}",
+                                          PId, Pname, PPrice, MnfDate, ExpDate);
+                    }
                 }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error Occured" + ex.Message);
-            }
-            finally
-            {
-                con.Close();
-                Console.ReadKey();
             }
         }
+
+        Console.ReadLine(); // Pause to see the output
     }
 }
-
-
-
-
